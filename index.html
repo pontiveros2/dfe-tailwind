@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-100 p-6">
+    <div class="max-w-7xl mx-auto">
+        <h1 class="text-2xl font-bold text-gray-800 mb-6">Dashboard</h1>
+        <p class="text-gray-600 mb-8">Bienvenido de nuevo, Pablo.</p>
+
+        <!-- Tarjetas de estadísticas -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <!-- Tarjeta 1: Usuarios Totales -->
+            <div class="bg-white p-6 rounded-lg shadow">
+                <div class="flex justify-between items-start mb-4">
+                    <h2 class="text-lg font-semibold text-gray-700">Usuarios Totales</h2>
+                    <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full flex items-center">
+                        +12%
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+                        </svg>
+                    </span>
+                </div>
+                <p class="text-3xl font-bold text-gray-800 mb-2">8,249</p>
+                <p class="text-sm text-gray-500">Aumentó 1,093 esta semana</p>
+            </div>
+
+            <!-- Tarjeta 2: Ingresos -->
+            <div class="bg-white p-6 rounded-lg shadow">
+                <div class="flex justify-between items-start mb-4">
+                    <h2 class="text-lg font-semibold text-gray-700">Ingresos</h2>
+                    <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full flex items-center">
+                        +8%
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+                        </svg>
+                    </span>
+                </div>
+                <p class="text-3xl font-bold text-gray-800 mb-2">$24,780</p>
+                <p class="text-sm text-gray-500">$2,567 más que el mes pasado</p>
+            </div>
+
+            <!-- Tarjeta 3: Secciones Activas -->
+            <div class="bg-white p-6 rounded-lg shadow">
+                <div class="flex justify-between items-start mb-4">
+                    <h2 class="text-lg font-semibold text-gray-700">Secciones Activas</h2>
+                    <span class="bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full flex items-center">
+                        -3%
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </span>
+                </div>
+                <p class="text-3xl font-bold text-gray-800 mb-2">1,342</p>
+                <p class="text-sm text-gray-500">42 menos que ayer</p>
+            </div>
+
+            <!-- Tarjeta 4: Tasa de Conversión -->
+            <div class="bg-white p-6 rounded-lg shadow">
+                <div class="flex justify-between items-start mb-4">
+                    <h2 class="text-lg font-semibold text-gray-700">Tasa de Conversión</h2>
+                    <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full flex items-center">
+                        +5%
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+                        </svg>
+                    </span>
+                </div>
+                <p class="text-3xl font-bold text-gray-800 mb-2">24.8%</p>
+                <p class="text-sm text-gray-500">1.2% más que el promedio</p>
+            </div>
+        </div>
+
+        <!-- Gráficas -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Gráfica 1: Crecimiento de Usuarios -->
+            <div class="bg-white p-6 rounded-lg shadow">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-lg font-semibold text-gray-700">Crecimiento de Usuarios</h2>
+                </div>
+                <div class="h-64">
+                    <canvas id="userGrowthChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Gráfica 2: Ingresos Mensuales -->
+            <div class="bg-white p-6 rounded-lg shadow">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-lg font-semibold text-gray-700">Ingresos Mensuales</h2>
+                </div>
+                <div class="h-64">
+                    <canvas id="monthlyRevenueChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Gráfica de Crecimiento de Usuarios
+        const userGrowthCtx = document.getElementById('userGrowthChart').getContext('2d');
+        const userGrowthChart = new Chart(userGrowthCtx, {
+            type: 'line',
+            data: {
+                labels: ['Ene', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dic'],
+                datasets: [
+                    {
+                        label: 'Usuarios 2024',
+                        data: [5000, 5500, 6000, 6200, 6800, 7200, 7500, 8000, 8249, 8500, 8800, 9100],
+                        borderColor: '#3B82F6',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        tension: 0.3,
+                        fill: true
+                    },
+                    {
+                        label: 'Usuario 2023',
+                        data: [4000, 4200, 4500, 4800, 5100, 5400, 5600, 5900, 6200, 6500, 6800, 7000],
+                        borderColor: '#9CA3AF',
+                        backgroundColor: 'rgba(156, 163, 175, 0.1)',
+                        tension: 0.3,
+                        fill: true
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        ticks: {
+                            callback: function(value) {
+                                return value.toLocaleString();
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Gráfica de Ingresos Mensuales
+        const monthlyRevenueCtx = document.getElementById('monthlyRevenueChart').getContext('2d');
+        const monthlyRevenueChart = new Chart(monthlyRevenueCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Ene', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dic'],
+                datasets: [{
+                    label: 'Ingresos 2024 ($)',
+                    data: [15000, 16500, 18000, 19500, 21000, 22500, 23000, 24000, 24780, 26000, 27500, 29000],
+                    backgroundColor: 'rgba(59, 130, 246, 0.7)',
+                    borderColor: '#3B82F6',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return '$' + value.toLocaleString();
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
